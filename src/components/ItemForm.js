@@ -2,48 +2,44 @@ import React, { useState } from "react";
 import { v4 as uuid } from "uuid";
 
 function ItemForm({ onItemFormSubmit }) {
-  const [input, setInput] = useState("");
-  const [itemFormCategory, setItemFormCategory] = useState("Produce");
-  const [newItem, setNewItem] = useState({
-    id: uuid(), // the `uuid` library can be used to generate a unique id
-    name: input,
-    category: itemFormCategory,
-  });
+  const [name, setName] = useState("");
+  const [category, setCategory] = useState("Produce");
 
-  function handleInput(e) {
-    setInput(e.target.value);
-  }
-  function handleItemFormCategory(e) {
-    setItemFormCategory(e.target.value);
+  function handleNameChange(event) {
+    setName(event.target.value);
   }
 
-  // function onItemFormSubmit(event) {
-  //   event.preventDefault();
-  //   const formData = { input: input, itemFormCategory: itemFormCategory };
-  //   const dataArray = [...newItem, formData];
+  function handleCategoryChange(event) {
+    setCategory(event.target.value);
+  }
 
-  //   setNewItem(dataArray);
-  //   setInput("");
-  //   setItemFormCategory("");
-  // }
+  function handleSubmit(event) {
+    event.preventDefault();
+    onItemFormSubmit({
+      id: uuid(),
+      name,
+      category,
+    });
+  }
+
   return (
-    <form onSubmit={onItemFormSubmit} className="NewItem">
+    <form className="NewItem" onSubmit={handleSubmit}>
       <label>
         Name:
         <input
-          onChange={handleInput}
-          value={newItem.name}
           type="text"
           name="name"
+          value={name}
+          onChange={handleNameChange}
         />
       </label>
 
       <label>
         Category:
         <select
-          onChange={handleItemFormCategory}
           name="category"
-          value={newItem.category}
+          value={category}
+          onChange={handleCategoryChange}
         >
           <option value="Produce">Produce</option>
           <option value="Dairy">Dairy</option>
@@ -55,5 +51,4 @@ function ItemForm({ onItemFormSubmit }) {
     </form>
   );
 }
-
 export default ItemForm;
